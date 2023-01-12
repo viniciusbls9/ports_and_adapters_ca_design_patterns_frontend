@@ -1,5 +1,5 @@
 import axios from "axios"
-import { FormEvent, Fragment, useEffect, useRef, useState } from "react"
+import { FormEvent, Fragment, useEffect, useMemo, useRef, useState } from "react"
 
 const TodoList = () => {
     const [todos, setTodos] = useState<any>([])
@@ -7,6 +7,7 @@ const TodoList = () => {
 
     const firstFetch = async () => {
         const fetch = await axios.get('http://localhost:3001/todos')
+        console.log(fetch)
         setTodos(fetch.data)
     }
 
@@ -47,11 +48,20 @@ const TodoList = () => {
         setTodos(toggleDoneTodo)
     }
 
+    const completed = useMemo(() => {
+        const total = todos.length
+        const done = todos.filter((item: any) => item.done).length
+        return Math.round((done / total) * 100)
+    }, [todos])
+
     return (
         <form onSubmit={addItem}>
             {todos.length === 0 ? (
                 <span>No item</span>
             ) : null}
+            <span className="completed">
+                {completed} %
+            </span>
             <ul>
                 {todos.map((item: any) => (
                     <Fragment key={item.description}>
