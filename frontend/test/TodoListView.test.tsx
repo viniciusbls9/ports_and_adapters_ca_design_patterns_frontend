@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import TodoList from "../src/components/TodoList"
 
 function sleep(mili: number) {
@@ -12,9 +12,11 @@ function sleep(mili: number) {
 
 describe('TodoListView', () => {
     test('Should test a todo list screen', async () => {
-        const { debug } = render(<TodoList />)
-
+        const { container } = render(<TodoList />)
         await sleep(100)
-        debug()
+
+        const completed = container.getElementsByClassName('completed')
+
+        expect(completed[0].textContent).toBe('33 %')
     })
 })
