@@ -10,3 +10,12 @@
 ## Context
 - HttpClientContext
     - Create HttpClientContext to abstract AxiosAdapter instance
+
+## Gateways
+Pattern helps to get external system data
+
+- TodoGateway
+    - Create a operations todo contract
+
+- TodoHttpGateway
+    - Class implements TodoGateway contract and receives a httpClient method (abstract) on constructor
