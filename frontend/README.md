@@ -19,3 +19,12 @@ Pattern helps to get external system data
 
 - TodoHttpGateway
     - Class implements TodoGateway contract and receives a httpClient method (abstract) on constructor
+
+- TodoMemoryGateway
+    - Memory httpClient method "requests" to use in tests
+
+## Entities
+Independents business rules
+
+- TodoList
+    - create class with all TodoList contains
