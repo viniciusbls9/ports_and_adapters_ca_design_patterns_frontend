@@ -9,7 +9,7 @@ describe('TodoList', () => {
 
         expect(todoList.getCompleted()).toBe(0)
     })
-    
+
     test("should create a todo List with 3 items and 2 done", () => {
         const todoList = new TodoList()
         todoList.addItem('a')
@@ -24,7 +24,7 @@ describe('TodoList', () => {
 
         expect(todoList.getCompleted()).toBe(67)
     })
-    
+
     test("should create a todo List with 3 items and 2 done", () => {
         const todoList = new TodoList()
         todoList.addItem('a')
@@ -38,5 +38,17 @@ describe('TodoList', () => {
         if (b) todoList.toggleDone(b)
 
         expect(todoList.getCompleted()).toBe(67)
+    })
+
+    test("should create a todo List with 3 items and delete 1", () => {
+        const todoList = new TodoList()
+        todoList.addItem('a')
+        todoList.addItem('b')
+        todoList.addItem('c')
+
+        const b = todoList.getItem('b')
+        if (b) todoList.removeItem(b)
+
+        expect(todoList.items).toHaveLength(2)
     })
 })
