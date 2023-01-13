@@ -1,11 +1,11 @@
 import { FormEvent, Fragment, useEffect, useMemo, useRef, useState } from "react"
-import AxiosAdapter from "src/infra/AxiosAdapter"
+import { HttpClient } from "src/context/HttpClientContext"
 
 const TodoList = () => {
     const [todos, setTodos] = useState<any>([])
     const newTodoRef = useRef<HTMLInputElement>(null)
 
-    const httpClient = new AxiosAdapter()
+    const { httpClient } = HttpClient()
 
     const firstFetch = async () => {
         const fetch = await httpClient.get('http://localhost:3001/todos')
