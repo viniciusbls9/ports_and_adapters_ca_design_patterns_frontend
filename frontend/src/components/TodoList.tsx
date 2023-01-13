@@ -1,14 +1,14 @@
 import { FormEvent, Fragment, useEffect, useMemo, useRef, useState } from "react"
-import { HttpClient } from "src/context/HttpClientContext"
+import { useHttpClient } from "src/context/HttpClientContext"
 
 const TodoList = () => {
     const [todos, setTodos] = useState<any>([])
     const newTodoRef = useRef<HTMLInputElement>(null)
 
-    const { httpClient } = HttpClient()
+    const { todoGateway } = useHttpClient()
 
     const firstFetch = async () => {
-        const fetch = await httpClient.get('http://localhost:3001/todos')
+        const fetch = await todoGateway.getTodos()
         setTodos(fetch)
     }
 
@@ -26,14 +26,14 @@ const TodoList = () => {
 
         setTodos((old: any) => [...old, item])
 
-        await httpClient.post('http://localhost:3001/todos', item)
+        await todoGateway.addItem(item)
     }
 
     async function removeItem(item: any) {
         const filterTodos = todos.filter((todo: any) => todo.description !== item.description)
         setTodos(filterTodos)
 
-        await httpClient.delete(`http://localhost:3001/todos/${item.id}`)
+        await todoGateway.removeItem(item.id)
     }
 
     async function toggleDone(item: any) {
@@ -44,7 +44,7 @@ const TodoList = () => {
             return todo
         })
 
-        await httpClient.put(`http://localhost:3001/todos/${item.id}`, item)
+        await todoGateway.updateItem(item)
 
         setTodos(toggleDoneTodo)
     }
@@ -60,9 +60,11 @@ const TodoList = () => {
             {todos?.length === 0 ? (
                 <span>No item</span>
             ) : null}
-            <span className="completed">
-                {completed} %
-            </span>
+            {completed > 0 ?
+                (<span className="completed">
+                    {completed} %
+                </span>) : null
+            }
             <ul>
                 {todos?.map((item: any) => (
                     <Fragment key={item.description}>
