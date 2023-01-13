@@ -68,8 +68,9 @@ const TodoList = () => {
             <ul>
                 {todos?.map((item: any) => (
                     <Fragment key={item.description}>
-                        <span>{item.id}</span>
-                        <li style={{ textDecoration: item.done ? 'line-through' : '' }}>{item.description}</li>
+                        <li style={{ textDecoration: item.done ? 'line-through' : '' }}>
+                            {item.id}  -  {item.description}
+                        </li>
                         <button type='button' onClick={() => toggleDone(item)}>done/undone</button>
                         <button type='button' onClick={() => removeItem(item)}>remove</button>
                     </Fragment>
