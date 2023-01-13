@@ -1,14 +1,15 @@
-import axios from "axios"
 import { FormEvent, Fragment, useEffect, useMemo, useRef, useState } from "react"
+import AxiosAdapter from "src/infra/AxiosAdapter"
 
 const TodoList = () => {
     const [todos, setTodos] = useState<any>([])
     const newTodoRef = useRef<HTMLInputElement>(null)
 
+    const httpClient = new AxiosAdapter()
+
     const firstFetch = async () => {
-        const fetch = await axios.get('http://localhost:3001/todos')
-        console.log(fetch)
-        setTodos(fetch.data)
+        const fetch = await httpClient.get('http://localhost:3001/todos')
+        setTodos(fetch)
     }
 
     useEffect(() => {
@@ -25,14 +26,14 @@ const TodoList = () => {
 
         setTodos((old: any) => [...old, item])
 
-        await axios.post('http://localhost:3001/todos', item)
+        await httpClient.post('http://localhost:3001/todos', item)
     }
 
     async function removeItem(item: any) {
         const filterTodos = todos.filter((todo: any) => todo.description !== item.description)
         setTodos(filterTodos)
 
-        await axios.delete(`http://localhost:3001/todos/${item.id}`)
+        await httpClient.delete(`http://localhost:3001/todos/${item.id}`)
     }
 
     async function toggleDone(item: any) {
@@ -43,27 +44,27 @@ const TodoList = () => {
             return todo
         })
 
-        await axios.put(`http://localhost:3001/todos/${item.id}`, item)
+        await httpClient.put(`http://localhost:3001/todos/${item.id}`, item)
 
         setTodos(toggleDoneTodo)
     }
 
     const completed = useMemo(() => {
-        const total = todos.length
-        const done = todos.filter((item: any) => item.done).length
+        const total = todos?.length
+        const done = todos?.filter((item: any) => item.done).length
         return Math.round((done / total) * 100)
     }, [todos])
 
     return (
         <form onSubmit={addItem}>
-            {todos.length === 0 ? (
+            {todos?.length === 0 ? (
                 <span>No item</span>
             ) : null}
             <span className="completed">
                 {completed} %
             </span>
             <ul>
-                {todos.map((item: any) => (
+                {todos?.map((item: any) => (
                     <Fragment key={item.description}>
                         <span>{item.id}</span>
                         <li style={{ textDecoration: item.done ? 'line-through' : '' }}>{item.description}</li>
