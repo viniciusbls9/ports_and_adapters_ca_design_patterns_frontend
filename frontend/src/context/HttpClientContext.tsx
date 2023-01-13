@@ -1,27 +1,30 @@
 import { createContext, PropsWithChildren, useContext } from "react"
+import TodoGateway from "src/gateways/TodoGateway"
+import TodoHttpGateway from "src/gateways/TodoHttpGateway"
 import AxiosAdapter from "src/infra/AxiosAdapter"
-import HttpClient from "src/infra/HttpClient"
+
+const httpClientInstance = new AxiosAdapter()
 
 export type HttpClientType = {
-    httpClient: HttpClient
+    todoGateway: TodoGateway
 }
 
 const defaultContext: HttpClientType = {
-    httpClient: new AxiosAdapter()
+    todoGateway: new TodoHttpGateway(httpClientInstance, 'http://localhost:3001')
 }
 
 export const HttpClientContext = createContext(defaultContext)
 
 export const HttpClientProvider = ({ children }: PropsWithChildren) => {
-    const httpClient = new AxiosAdapter()
+    const todoGateway = new TodoHttpGateway(httpClientInstance, 'http://localhost:3001')
 
     return (
-        <HttpClientContext.Provider value={{ httpClient }}>
+        <HttpClientContext.Provider value={{ todoGateway }}>
             {children}
         </HttpClientContext.Provider>
     )
 }
 
-export const HttpClient = () => {
+export const useHttpClient = () => {
     return useContext(HttpClientContext);
 }
