@@ -6,3 +6,7 @@
 
 - AxiosAdapter
     - Create a http methods using axios, but uncoupled and and being able to use another library
+
+## Context
+- HttpClientContext
+    - Create HttpClientContext to abstract AxiosAdapter instance
