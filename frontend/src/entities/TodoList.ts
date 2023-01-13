@@ -13,9 +13,6 @@ export default class TodoList {
         const item = { id: Math.random().toString(36).slice(2, 7), description, done: false }
 
         this.items.push(item)
-
-        description = ''
-
     }
 
     async removeItem(item: any) {
@@ -32,6 +29,7 @@ export default class TodoList {
 
     getCompleted() {
         const total = this.items?.length
+        if (total === 0) return 0
         const done = this.items?.filter((item: any) => item.done).length
         return Math.round((done / total) * 100)
     }
