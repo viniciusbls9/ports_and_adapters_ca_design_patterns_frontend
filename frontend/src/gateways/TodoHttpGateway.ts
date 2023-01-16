@@ -1,11 +1,14 @@
+import TodoList from "src/entities/TodoList";
 import HttpClient from "src/infra/HttpClient";
 import TodoGateway from "./TodoGateway";
 
 export default class TodoHttpGateway implements TodoGateway {
-    constructor(readonly httpClient: HttpClient, readonly baseUrl: string) {}
+    constructor(readonly httpClient: HttpClient, readonly baseUrl: string) { }
 
     async getTodos(): Promise<any> {
-        return await this.httpClient.get(`${this.baseUrl}/todos`)
+        const todoData = await this.httpClient.get(`${this.baseUrl}/todos`)
+        const todoList = new TodoList(todoData)
+        return todoList
     }
 
     async addItem(item: any): Promise<any> {
